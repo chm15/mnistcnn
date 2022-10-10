@@ -85,6 +85,28 @@ void Network::updateWeights() {
     }
 }
 
+float Network::getGradientMagnitude() {
+    float magSum = 0;
+    for (int i=0;i<this->layers.size();i++) {
+        magSum += this->layers[i].getGradientMagnitude();
+    }
+    return magSum;
+}
+
+void Network::updateStepsize() {
+    float magSum = this->getGradientMagnitude();
+    float stepSize = 1/(0.5+magSum);
+    this->stepSize = stepSize;
+
+    for (int i=0;i<this->layers.size();i++) {
+        this->layers[i].updateStepsize(stepSize);
+    }
+}
+
+float Network::getStepsize() {
+    return this->stepSize;
+}
+
 void Network::backPropagate() {
     Layer& outputLayer = this->layers.back();
     int tNeurons = outputLayer.neurons.size();
@@ -102,6 +124,7 @@ void Network::backPropagate() {
     }
 
     // Update the network's weights.
+    this->updateStepsize();
     this->updateWeights();
     this->resetError();
 }

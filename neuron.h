@@ -18,6 +18,8 @@ public:
     void resetDeriv();
     void calcDeriv(float inputDeriv);
     void updateWeights();
+    float getGradientMagnitude();
+    void updateStepsize(float stepSize);
     float lRate = 0.2;
 private: 
     float val=0;

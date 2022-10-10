@@ -17,6 +17,8 @@ public:
     void resetDeriv();
     void backPropagate();
     void updateWeights();
+    float getGradientMagnitude();
+    void updateStepsize(float stepSize);
     std::vector<float> activation();
     std::vector<Neuron> neurons;
     void printOutput();

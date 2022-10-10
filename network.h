@@ -22,9 +22,14 @@ public:
     void printError();
     void calculateError(std::vector<float>);
     void resetError() { this->error.clear(); };
+    void updateStepsize();
+    float getStepsize();
+
 private:
     std::vector<Layer> layers;
     std::vector<float> error;
+    float getGradientMagnitude();
+    float stepSize = 0.02;  // adaptive
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <cmath>
 #include "neuron.h"
 #include "sigmoid.h"
 
@@ -54,15 +55,29 @@ void Neuron::backPropagate() {
     }
 }
 
+float Neuron::getGradientMagnitude() {
+    float magSum = 0;  // Magnitude sum for neuron
+    int tConn = this->connections.size();
+    for (int i=0;i<tConn;i++) {
+        Connection& cConn = this->connections[i];
+        //magSum += abs(this->deriv * cConn.neuron->activation());
+        magSum += abs(this->deriv);
+    }
+    return magSum;
+}
+
+void Neuron::updateStepsize(float stepSize) {
+    this->lRate = stepSize;
+}
+
 void Neuron::updateWeights() {
     int tConn = this->connections.size();
     for (int i=0;i<tConn;i++) {
         Connection& cConn = this->connections[i];
-
-        // TODO: MIGHT HAVE TO BE NEGATIVE
         cConn.weight -= this->deriv * this->lRate * cConn.neuron->activation();
     }
     this->bias -= this->lRate * this->deriv;
+    //this->bias -= 0.1 * this->deriv;
 }
 
 void Neuron::resetDeriv() {

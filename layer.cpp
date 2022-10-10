@@ -86,6 +86,24 @@ void Layer::backPropagate() {
     }
 }
 
+float Layer::getGradientMagnitude() {
+    float magSum = 0;
+    int tNeurons = this->neurons.size();
+    for (int i=0;i<tNeurons;i++) {
+        Neuron& cNeuron = this->neurons[i];
+        magSum += cNeuron.getGradientMagnitude();
+    }
+    return magSum;
+}
+
+void Layer::updateStepsize(float stepSize) {
+    int tNeurons = this->neurons.size();
+    for (int i=0;i<tNeurons;i++) {
+        Neuron& cNeuron = this->neurons[i];
+        cNeuron.updateStepsize(stepSize);
+    }
+}
+
 void Layer::updateWeights() {
     for (int i=0;i<this->neurons.size();i++) {
         this->neurons[i].updateWeights();
